@@ -40,6 +40,7 @@ def send_to_actuator(command):
     """ Função para enviar comandos para o atuador via UDP. """
     with udp_socket.socket(udp_socket.AF_INET, udp_socket.SOCK_DGRAM) as s:
         s.sendto(json.dumps(command).encode(), ('localhost', 65433))
+        
 def handle_control_command(command):
     """Envia comandos para atuadores via UDP"""
     if command['type'] == 'light_control':
@@ -55,5 +56,6 @@ def handle_control_command(command):
         }
     
     send_to_actuator(control_msg)  # Usa a função existente
+
 if __name__ == "__main__":
     start_gateway()

@@ -18,6 +18,7 @@ def kafka_consumer():
     )
     for message in consumer:
         socketio.emit('sensor_update', message.value)
+        
 @socketio.on('control')
 def handle_control(command):
     from gateway.gateway import handle_control_command

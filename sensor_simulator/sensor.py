@@ -2,13 +2,16 @@ import random
 import time
 import json
 import socket
-
+import threading
+import multiprocessing
 SENSOR_TYPES = {
     'temperature': lambda: round(random.uniform(18.0, 32.0), 2),
-    'humidity': lambda: round(random.uniform(30.0, 80.0)), 
-    'co2': lambda: random.randint(400, 2000),
-    'noise': lambda: random.randint(30, 90),
-    'motion': lambda: random.choice([True, False])
+    'humidity':    lambda: round(random.uniform(30.0, 80.0)),
+    'co2':         lambda: random.randint(400, 2000),
+    'noise':       lambda: random.randint(30, 90),
+    'motion':      lambda: random.choice([True, False]),
+    'light':       lambda: round(random.uniform(0.0, 1000.0), 1),  # luminosidade em lux
+    'pressure':    lambda: round(random.uniform(950.0, 1050.0), 2) # pressão em hPa
 }
 
 def simulate_sensor(sensor_id, sensor_type, interval=5):
@@ -25,6 +28,17 @@ def simulate_sensor(sensor_id, sensor_type, interval=5):
         time.sleep(interval)
 
 if __name__ == "__main__":
-    # Exemplo para iniciar múltiplos sensores
-    simulate_sensor("sensor_001", "temperature")
-    # Adicione mais instâncias conforme necessário
+
+    from multiprocessing import Process
+
+    sensors = [
+        ("sensor_001", "temperature"),
+        ("sensor_002", "humidity"),
+        ("sensor_003", "noise"),
+        ("sensor_004", "light"),         # <-- Novo sensor aqui!
+        ("sensor_005", "motion")         # <-- Pode adicionar outros também!
+    ]
+
+    for sensor_id, sensor_type in sensors:
+        p = Process(target=simulate_sensor, args=(sensor_id, sensor_type))
+        p.start()

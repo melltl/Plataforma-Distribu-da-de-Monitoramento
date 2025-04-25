@@ -14,18 +14,9 @@
             <input type="range" id="temp-001" min="18" max="30" value="24"
                    onchange="setTemperature('001', this.value)">
         </div>
-        <!-- Adicione mais salas conforme necessário -->
+        
     </div>
     
-    <script>
-    function toggleLight(roomId) {
-        socket.emit('control', {type: 'light_control', room: roomId});
-    }
-    
-    function setTemperature(roomId, temp) {
-        socket.emit('control', {type: 'ac_control', room: roomId, temperature: temp});
-    }
-    </script>
     
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
